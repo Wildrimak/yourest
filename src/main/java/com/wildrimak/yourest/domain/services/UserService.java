@@ -22,6 +22,10 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+	public void delete(Integer userId) {
+		userRepository.deleteById(userId);
+	}
+
 	public void validateUserEmail(User user) {
 
 		String myEmail = user.getEmail();
@@ -37,7 +41,6 @@ public class UserService {
 				throw new BusinessException("This email has alredy been registered!");
 			}
 		}
-
 
 	}
 
