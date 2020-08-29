@@ -1,41 +1,36 @@
 package com.wildrimak.yourest.domain.models;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Entity(name = "users")
-public class User {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+public class Channel {
 
 	@Id
-	@Column(name = "id_user")
+	@Column(name = "id_channel")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Email
-	@NotEmpty
-	private String email;
+	@ManyToOne
+	@JsonIgnore
+	@JoinColumn(name = "id_user")
+	private User user;
 
 	private String name;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Channel> channels;
+	public Channel() {
+	}
 
-	public User() {
-		this.channels = new ArrayList<>();
-		Channel channel = new Channel(this.name);
-		this.channels.add(channel);
+	public Channel(String name) {
+		this();
+		this.setName(name);
 	}
 
 	public Integer getId() {
@@ -46,14 +41,6 @@ public class User {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -62,12 +49,12 @@ public class User {
 		this.name = name;
 	}
 
-	public List<Channel> getChannels() {
-		return Collections.unmodifiableList(channels);
+	public User getUser() {
+		return user;
 	}
 
-	public void addChannel(Channel channel) {
-		this.channels.add(channel);
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
@@ -86,7 +73,7 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Channel other = (Channel) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
