@@ -38,12 +38,9 @@ public class User {
 	private String password;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Channel> channels;
+	private List<Channel> channels = new ArrayList<>();
 
 	public User() {
-		this.channels = new ArrayList<>();
-		Channel channel = new Channel(this.name);
-		this.channels.add(channel);
 	}
 
 	public Integer getId() {
@@ -88,6 +85,10 @@ public class User {
 
 	public List<Channel> getChannels() {
 		return Collections.unmodifiableList(channels);
+	}
+
+	public void setChannels(List<Channel> channels) {
+		this.channels = channels;
 	}
 
 	public void addChannel(Channel channel) {

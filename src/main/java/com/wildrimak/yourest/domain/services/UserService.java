@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wildrimak.yourest.domain.exceptions.BusinessException;
+import com.wildrimak.yourest.domain.models.Channel;
 import com.wildrimak.yourest.domain.models.User;
 import com.wildrimak.yourest.domain.repositories.UserRepository;
 
@@ -18,8 +19,17 @@ public class UserService {
 	}
 
 	public User save(User user) {
+		
+		generateUserChannel(user);
 		validateUserEmail(user);
+
 		return userRepository.save(user);
+	}
+
+	private void generateUserChannel(User user) {
+		Channel channel = new Channel(user.getName());
+		channel.setUser(user);
+		user.addChannel(channel);
 	}
 
 	public void delete(Integer userId) {

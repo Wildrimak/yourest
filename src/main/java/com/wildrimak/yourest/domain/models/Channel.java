@@ -30,7 +30,6 @@ public class Channel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotNull
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "id_user")
