@@ -1,5 +1,6 @@
 package com.wildrimak.yourest.domain.models;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -64,11 +65,23 @@ public class Channel {
 	private List<Subscription> subscribers; // Other channels that's like to me
 
 	public Channel() {
+		this.views = 0L;
+		this.videos = new ArrayList<>();
+		this.subscriptions = new ArrayList<>();
+		this.subscribers = new ArrayList<>();
 	}
 
 	public Channel(String name) {
 		this();
 		this.name = name;
+	}
+
+	public Channel(String name, String description, String location, String art) {
+		this();
+		this.name = name;
+		this.description = description;
+		this.location = location;
+		this.art = art;
 	}
 
 	public Integer getId() {
