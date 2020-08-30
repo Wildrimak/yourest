@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wildrimak.yourest.api.models.ChannelInputModel;
+import com.wildrimak.yourest.domain.exceptions.EntityNotFoundException;
 import com.wildrimak.yourest.domain.models.Channel;
-import com.wildrimak.yourest.domain.repositories.ChannelRepository;
+import com.wildrimak.yourest.domain.models.User;
+import com.wildrimak.yourest.domain.repositories.UserRepository;
 import com.wildrimak.yourest.domain.services.ChannelService;
 
 @RestController
@@ -22,14 +24,18 @@ import com.wildrimak.yourest.domain.services.ChannelService;
 public class ChannelController {
 
 	@Autowired
-	private ChannelService channelService;
+	private UserRepository userRepository;
 
 	@Autowired
-	private ChannelRepository channelRepository;
+	private ChannelService channelService;
 
 	@GetMapping
-	private List<Channel> getChannels() {
-		return channelRepository.findAll();
+	private List<Channel> getChannels(@PathVariable Integer idUser) {
+
+		User user = userRepository.findById(idUser).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+		return user.getChannels();
+
 	}
 
 	@PostMapping
