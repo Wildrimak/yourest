@@ -49,8 +49,6 @@ public class Channel {
 
 	private String art;
 
-	private Long views;
-
 	@Column(name = "active_membership")
 	private Boolean activeMembership;
 
@@ -64,7 +62,6 @@ public class Channel {
 	private List<Subscription> subscribers; // Other channels that's like to me
 
 	public Channel() {
-		this.views = 0L;
 		this.videos = new ArrayList<>();
 		this.subscriptions = new ArrayList<>();
 		this.subscribers = new ArrayList<>();
@@ -140,11 +137,17 @@ public class Channel {
 	}
 
 	public Long getViews() {
-		return views;
-	}
 
-	public void setViews(Long views) {
-		this.views = views;
+		Long total = 0L;
+
+		if (this.videos.size() > 0) {
+
+			total = this.videos.stream().mapToLong(video -> video.getViews()).sum();
+		} else {
+			total = 0L;
+		}
+
+		return total;
 	}
 
 	public Boolean getActiveMembership() {

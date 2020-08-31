@@ -28,6 +28,17 @@ public class UserServiceTest {
 		this.userService = new UserService(userRepository);
 
 	}
+	
+	@Test
+	public void userMustHaveAChannelWhenItHasBeenCreated() {
+
+		User user = new User();
+		user.setName("Ana");
+		userService.save(user);
+		Integer amount = user.getChannels().size();
+		assertEquals(1, amount);
+
+	}
 
 	@Test
 	public void shouldBeThrowBusinessExceptionIfEmailAlredyExists() {

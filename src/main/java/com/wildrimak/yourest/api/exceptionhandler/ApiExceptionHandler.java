@@ -17,9 +17,22 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.wildrimak.yourest.api.exceptionhandler.Problem.Field;
 import com.wildrimak.yourest.domain.exceptions.BusinessException;
+import com.wildrimak.yourest.domain.exceptions.EntityNotFoundException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<Object> handleEntidadeNaoEncontrada(BusinessException ex, WebRequest request) {
+		var status = HttpStatus.NOT_FOUND;
+
+		var problem = new Problem();
+		problem.setStatus(status.value());
+		problem.setTitle(ex.getMessage());
+		problem.setDataTime(LocalDateTime.now());
+
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
 
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<Object> handleNegocio(BusinessException ex, WebRequest request) {
